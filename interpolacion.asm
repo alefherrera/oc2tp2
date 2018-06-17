@@ -6,6 +6,7 @@ img1 dd 0x1,0x2,0x4,0x8
 img2 dd 0x4,0x5,0x6,0x7
 interpol dd 0.5
 vector dd 0,0,0,0
+complemento dd 1.0, 1.0, 1.0, 1.0
 
 section .bss
 result resd 0
@@ -17,6 +18,8 @@ CMAIN:
     xor eax, eax
     xor ebx, ebx
     mov eax, [interpol]
+    
+    ;usar shuffle para leer el array de bytes y ponerlo en registros xmm
     
     movups xmm0, [img1]
     movups xmm1, [img2]
@@ -35,10 +38,6 @@ CMAIN:
     mulps xmm0, xmm2
     
     movups [result], xmm0
-    
-    mov ebx, 1
-    sub ebx, eax
-    mov eax, ebx
     
     
     ret
