@@ -1,9 +1,13 @@
 global _interpolar
 
 section .data
+img1 dd 0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24
+;237,28,36,237,28,36,237,28,36,237,28,36
+img2 dd 0xff,0xf2,0x00,0xff,0xf2,0x00,0xff,0xf2,0x00,0xff,0xf2,0x00
+;255,242,0,255,242,0,255,242,0,255,242,0
 ;vector db 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
-img1 dd 0x2,0x4,0x4,0x8,0x6,0x6,0x12,0x8
-img2 dd 0x4,0x5,0x6,0x7,0x2,0x8,0x10,0x24
+;img1 dd 0x2,0x4,0x4,0x8,0x6,0x6,0x12,0x8
+;img2 dd 0x4,0x5,0x6,0x7,0x2,0x8,0x10,0x24
 interpol dd 0.5
 vector dd 0,0,0,0
 complemento dd 1.0, 1.0, 1.0, 1.0
@@ -16,18 +20,18 @@ section .text
 
 ;void interpolar(unsigned char *img1, unsigned char *img2, unsigned char *resultado,float p, int cantidad);
 
-;global CMAIN
-;CMAIN:
-;    mov ebp, esp; for correct debugging
-;    push 8
-;    push dword [interpol]
-;    push vectorDebug
-;    push img2
-;    push img1
-;    call _interpolar
-;    add esp, 20
-;    
-;    ret
+global CMAIN
+CMAIN:
+    mov ebp, esp; for correct debugging
+    push 8
+    push dword [interpol]
+    push vectorDebug
+    push img2
+    push img1
+    call _interpolar
+    add esp, 20
+    
+    ret
 
 
 _interpolar:
