@@ -33,9 +33,16 @@ int main(int argc, char **argv)
   leer_rgb(img1, buffer1, filas, columnas);
   leer_rgb(img2, buffer2, filas, columnas);
 
-  interpolar(buffer1, buffer2, bufferResult, 0.5f, cantidad);
+  interpolar(buffer1, buffer2, bufferResult, 1.0f, cantidad);
 
+  printf("Antes de escribir\n");
+  printf("Buffer1: %s\n", buffer1);
+  printf("Buffer2: %s\n", buffer2);
+  printf("BufferResult: %s\n", bufferResult);
+  
+  escribir_rgb("asd.rgb", buffer1, filas, columnas);
   escribir_rgb(resultado, bufferResult, filas, columnas);
+  printf("Despues de escribir\n");
 
   return 0;
 }
@@ -50,8 +57,12 @@ int leer_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
 
 int escribir_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
 {
+  printf("EscribirRGB: %s, %s, %d, %d\n", archivo, buffer, filas, columnas);  
   FILE *file;
+  printf("Antes de FOpen\n");
   file = fopen(archivo, "w");
+  printf("Despues de FOpen, Antes de fwrite.\n");
   fwrite(buffer, filas * columnas * 3, 1, file);
+  printf("Despues de fwrite.\n");
   return fclose(file);
 }

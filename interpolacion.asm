@@ -16,44 +16,44 @@ section .text
 
 ;void interpolar(unsigned char *img1, unsigned char *img2, unsigned char *resultado,float p, int cantidad);
 
-global CMAIN
-CMAIN:
-    mov ebp, esp; for correct debugging
-    push 8
-    push dword [interpol]
-    push vectorDebug
-    push img2
-    push img1
-    call _interpolar
-    add esp, 20
-    
-    
-    
-    ret
+;global CMAIN
+;CMAIN:
+;    mov ebp, esp; for correct debugging
+;    push 8
+;    push dword [interpol]
+;    push vectorDebug
+;    push img2
+;    push img1
+;    call _interpolar
+;    add esp, 20
+;    
+;    ret
 
 
 _interpolar:
     mov ebp, esp; for correct debugging
     push ebp
     mov ebp, esp
-    mov eax, [ebp + 8]      ;img1
-    mov ebx, [ebp + 12]     ;img2
-    mov edx, [ebp + 16]     ;resultado
-    ;mov edx, [ebp + 20]     ;p
     
-;    mov edx, [ebp + 24]
-;    mov ecx, 4
-;    mul edx
+    ;multiplicamos por 4 el valor de cantidad
+    mov eax, 4
+    mov ecx, [ebp + 24]
+    mul ecx
+    mov ebx, eax
+    
+    mov edx, [ebp + 16]     ;resultado
 
     xor ecx, ecx
 CICLO:
-    cmp ecx, [ebp + 24]
+    cmp ecx, ebx
     jge FIN_CICLO
     
     ;usar shuffle para leer el array de bytes y ponerlo en registros xmm
     
-    movups xmm0, [eax + ecx + ecx + ecx + ecx]
-    movups xmm1, [ebx + ecx + ecx + ecx + ecx]
+    mov eax, [ebp + 8]      ;img1
+    movups xmm0, [eax + ecx]
+    mov eax, [ebp + 12]     ;img2
+    movups xmm1, [eax + ecx]
     cvtdq2ps xmm0, xmm0
     cvtdq2ps xmm1, xmm1
     
@@ -88,7 +88,7 @@ CICLO:
     movups [debug], xmm0
     movups [edx + ecx], xmm0
 
-    add ecx, 4
+    add ecx, 16
     jmp CICLO
     
 FIN_CICLO:

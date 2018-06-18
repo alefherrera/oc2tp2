@@ -1,1 +1,1 @@
-.\programa.exe "img1.rgb" "img2.rgb" 100 100 2 "resultado.rgb"
+.\programa.exe "img1.rgb" "img2.rgb" 2 2 2 "resultado.rgb"

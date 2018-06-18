@@ -1,0 +1,1 @@
+gm convert -depth 8 -size 2x2 img4.bmp img2.rgb
