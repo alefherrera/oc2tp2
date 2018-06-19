@@ -5,6 +5,7 @@
 void interpolar(unsigned char *img1, unsigned char *img2, unsigned char *resultado, float p, int cantidad);
 int leer_rgb(char *archivo, unsigned char *buffer, int filas, int columnas);
 int escribir_rgb(char *archivo, unsigned char *buffer, int filas, int columnas);
+void printChar(unsigned char *buffer);
 
 int main(int argc, char **argv)
 {
@@ -34,12 +35,15 @@ int main(int argc, char **argv)
   leer_rgb(img1, buffer1, filas, columnas);
   leer_rgb(img2, buffer2, filas, columnas);
 
-  interpolar(buffer1, buffer2, bufferResult, 0.5f, cantidad);
+  interpolar(buffer1, buffer2, bufferResult, 0.0, cantidad);
 
   printf("Antes de escribir\n");
-  printf("Buffer1: %s\n", buffer1);
-  printf("Buffer2: %s\n", buffer2);
-  printf("BufferResult: %s\n", bufferResult);
+  printf("Buffer1:        ");
+  printChar(buffer1);
+  printf("Buffer2:        ");
+  printChar(buffer2);
+  printf("BufferResult:   ");
+  printChar(bufferResult);
 
   escribir_rgb(resultado, bufferResult, filas, columnas);
 
@@ -48,20 +52,29 @@ int main(int argc, char **argv)
 
 int leer_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
 {
-  printf("Leer_rgb: Archivo: %s, Buffer: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, buffer, strlen((char*)buffer), filas, columnas);
+  printf("Leer_rgb: Archivo: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, strlen((char *)buffer), filas, columnas);
   FILE *file;
   file = fopen(archivo, "r");
   fread(buffer, filas * columnas * 3, 1, file);
-  printf("Leer_rgb fin: Archivo: %s, Buffer: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, buffer, strlen((char*)buffer), filas, columnas);
+  printf("Leer_rgb fin: Archivo: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, strlen((char *)buffer), filas, columnas);
   return fclose(file);
 }
 
 int escribir_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
 {
-  printf("Escribir_rgb: Archivo: %s, Buffer: %s, BufferLength: %d\n", archivo, buffer, strlen((char*)buffer));
+  printf("Escribir_rgb: Archivo: %s, BufferLength: %d\n", archivo, strlen((char *)buffer));
   FILE *file;
   file = fopen(archivo, "w+");
-  fwrite(buffer, strlen((char*)buffer), 1, file);
-  printf("Escribir_rgb fin: Archivo: %s, Buffer: %s, BufferLength: %d\n", archivo, buffer, strlen((char*)buffer));
+  fwrite(buffer, filas * columnas * 3, 1, file);
+  printf("Escribir_rgb fin: Archivo: %s, BufferLength: %d\n", archivo, strlen((char *)buffer));
   return fclose(file);
+}
+
+void printChar(unsigned char *buffer)
+{
+  for (int i = 0; i < strlen((char *)buffer); i++)
+  {
+    printf("%x ", (int)buffer[i]);
+  }
+  printf("\n");
 }

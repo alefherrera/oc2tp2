@@ -1,18 +1,18 @@
-;%include "io.inc"
+%include "io.inc"
 
 global _interpolar
 
 section .data
-img1 dd 0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24
+img1 dd 0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0x13
 ;237,28,36,237,28,36,237,28,36,237,28,36
-img2 dd 0xff,0xf2,0x00,0xff,0xf2,0x00,0xff,0xf2,0x00,0xff,0xf2,0x00
+img2 dd 0xff,0xf2,0x0a,0xff,0xf2,0x0a,0xff,0xf2,0x0a,0xff,0xf2,0x0a,0x13
 ;255,242,0,255,242,0,255,242,0,255,242,0
 ;img1 dd 0x2,0x4,0x4,0x8,0x6,0x6,0x12,0x8
 ;img2 dd 0x4,0x5,0x6,0x7,0x2,0x8,0x10,0x24
-interpol dd 1.0
+interpol dd 0.0
 vector dd 0,0,0,0
 complemento dd 1.0, 1.0, 1.0, 1.0
-vectorDebug dd 0,0,0,0,0,0,0,0,0,0,0,0
+vectorDebug dd 0,0,0,0,0,0,0,0,0,0,0,0,0
 
 section .bss
 debug resd 0
@@ -23,7 +23,8 @@ section .text
 
 global CMAIN
 CMAIN:
-    push 8
+    mov ebp, esp; for correct debugging
+    push 12
     push dword [interpol]
     push vectorDebug
     push img2
@@ -49,7 +50,7 @@ _interpolar:
     xor ecx, ecx
 CICLO:
     cmp ecx, ebx
-    jg FIN_CICLO
+    jge FIN_CICLO
     
     ;usar shuffle para leer el array de bytes y ponerlo en registros xmm
     
@@ -88,14 +89,12 @@ CICLO:
     
     cvtps2dq xmm0, xmm0
     
-    movups [debug], xmm0
     movups [edx + ecx], xmm0
 
     add ecx, 16
     jmp CICLO
     
 FIN_CICLO:
-    
     
     pop ebp
     ret
