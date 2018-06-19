@@ -44,8 +44,11 @@ _interpolar:
     mov ecx, [ebp + 24]
     mul ecx
     mov ebx, eax
-    
+
     mov edx, [ebp + 16]     ;resultado
+    
+    movups xmm7, [ebp + 16]
+    movups edx,  xmm7
 
     xor ecx, ecx
 CICLO:
