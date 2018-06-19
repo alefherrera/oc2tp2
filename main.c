@@ -35,7 +35,7 @@ int main(int argc, char **argv)
   leer_rgb(img1, buffer1, filas, columnas);
   leer_rgb(img2, buffer2, filas, columnas);
 
-  interpolar(buffer1, buffer2, bufferResult, 0.0, cantidad);
+  interpolar(buffer1, buffer2, bufferResult, 0.5, cantidad);
 
   printf("Antes de escribir\n");
   printf("Buffer1:        ");
