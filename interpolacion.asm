@@ -3,42 +3,24 @@
 global _interpolar
 
 section .data
-img1 dd 0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0x13
+;img1 dd 0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0xed,0x1c,0x24,0x13
 ;237,28,36,237,28,36,237,28,36,237,28,36
-img2 dd 0xff,0xf2,0x0a,0xff,0xf2,0x0a,0xff,0xf2,0x0a,0xff,0xf2,0x0a,0x13
+;img2 dd 0xff,0xf2,0x0a,0xff,0xf2,0x0a,0xff,0xf2,0x0a,0xff,0xf2,0x0a,0x13
 ;255,242,10,255,242,10,255,242,10,255,242,10
 ;img1 dd 0x2,0x4,0x4,0x8,0x6,0x6,0x12,0x8
 ;img2 dd 0x4,0x5,0x6,0x7,0x2,0x8,0x10,0x24
-interpol dd 0.5
+;interpol dd 0.5
 ;vector dd 0,0,0,0
 complemento dd 1.0
-vectorDebug dd 0,0,0,0,0,0,0,0,0,0,0,0,0
+;vectorDebug dd 0,0,0,0,0,0,0,0,0,0,0,0,0
 align 16
 mascara1 db 03h,0ffh,0ffh,0ffh,02h,0ffh,0ffh,0ffh,01h,0ffh,0ffh,0ffh,00h,0ffh,0ffh,0ffh
 ;mascara para unir
 align 16
 mascara2 db 0ch,08h,04h,0h,0ffh,0ffh,0ffh,0ffh,0ffh,0ffh,0ffh,0ffh,0ffh,0ffh,0ffh,0ffh
 
-section .bss
-debug resd 0
-
 section .text
-
 ;void interpolar(unsigned char *img1, unsigned char *img2, unsigned char *resultado,float p, int cantidad);
-
-global CMAIN
-CMAIN:
-    mov ebp, esp; for correct debugging
-    push 12
-    push dword [interpol]
-    push vectorDebug
-    push img2
-    push img1
-    call _interpolar
-    add esp, 20
-    
-    ret
-
 
 _interpolar:
     push ebp
@@ -64,8 +46,6 @@ CICLO:
     movups xmm0, [eax + ecx]; img1
     movups xmm1, [ebx + ecx]; img2
     
-    movups [debug], xmm0
-    movups [debug], xmm1
     
     movd xmm2, esi; paso el float a un registro xmm
     pshufd xmm2, xmm2, 00000000;aplico la mascara
@@ -74,17 +54,11 @@ CICLO:
     pshufd xmm3, xmm3, 00000000;aplico la mascara
     subps xmm3, xmm2
 
-    ;pshufb xmm0, [mascara1];aplico mascara la imagen 1
-    ;pshufb xmm1, [mascara1];aplico mascara la imagen 2
-    
-    movups [debug], xmm0
-    movups [debug], xmm1
+    pshufb xmm0, [mascara1];aplico mascara la imagen 1
+    pshufb xmm1, [mascara1];aplico mascara la imagen 2
     
     cvtdq2ps xmm0, xmm0
     cvtdq2ps xmm1, xmm1
-    
-    movups [debug], xmm0
-    movups [debug], xmm1
 
     mulps xmm0, xmm2 ; img1 * p
     mulps xmm1, xmm3 ; img2 * (1 - p)
@@ -92,16 +66,12 @@ CICLO:
     addps xmm0, xmm1
     
     cvtps2dq xmm0, xmm0
-    
-    movups [debug], xmm0
 
-    ;pshufb xmm0, [mascara2];aplico mascara para parte baja
+    pshufb xmm0, [mascara2];aplico mascara para parte baja
     
-    movups [debug], xmm0
-    
-    movups [edx + ecx], xmm0
+    movd [edx + ecx], xmm0
 
-    add ecx, 16
+    add ecx, 4
     jmp CICLO
     
 FIN_CICLO:
