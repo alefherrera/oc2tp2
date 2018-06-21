@@ -67,7 +67,7 @@ int leer_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
 {
   printf("Leer_rgb: Archivo: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, strlen((char *)buffer), filas, columnas);
   FILE *file;
-  file = fopen(archivo, "r");
+  file = fopen(archivo, "rb");
   fread(buffer, obtener_cantidad(filas, columnas), 1, file);
   printf("Leer_rgb fin: Archivo: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, strlen((char *)buffer), filas, columnas);
   return fclose(file);
@@ -77,7 +77,7 @@ int escribir_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
 {
   printf("Escribir_rgb: Archivo: %s, BufferLength: %d\n", archivo, strlen((char *)buffer));
   FILE *file;
-  file = fopen(archivo, "w+");
+  file = fopen(archivo, "wb+");
   fwrite(buffer, obtener_cantidad(filas, columnas), 1, file);
   printf("Escribir_rgb fin: Archivo: %s, BufferLength: %d\n", archivo, strlen((char *)buffer));
   return fclose(file);
