@@ -6,6 +6,7 @@ void interpolar(unsigned char *img1, unsigned char *img2, unsigned char *resulta
 int leer_rgb(char *archivo, unsigned char *buffer, int filas, int columnas);
 int escribir_rgb(char *archivo, unsigned char *buffer, int filas, int columnas);
 void printChar(unsigned char *buffer);
+int obtener_cantidad(int filas, int columnas);
 
 int main(int argc, char **argv)
 {
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
   printf("Resultado: %s\n", resultado);
   //}
 
-  int cantidad = filas * columnas * 3;
+  int cantidad = obtener_cantidad(filas, columnas);
 
   unsigned char *buffer1 = malloc(cantidad);
   unsigned char *buffer2 = malloc(cantidad);
@@ -35,11 +36,11 @@ int main(int argc, char **argv)
   leer_rgb(img1, buffer1, filas, columnas);
   leer_rgb(img2, buffer2, filas, columnas);
 
-  printf("Antes de escribir\n");
-  printf("Buffer1:        ");
-  printChar(buffer1);
-  printf("Buffer2:        ");
-  printChar(buffer2);
+  //printf("Antes de escribir\n");
+  //printf("Buffer1:        ");
+  //printChar(buffer1);
+  //printf("Buffer2:        ");
+  //printChar(buffer2);
 
   float variant = 1.0 / (n + 1);
   float p;
@@ -50,8 +51,8 @@ int main(int argc, char **argv)
     p = variant * i;
     interpolar(buffer1, buffer2, bufferResult, p, cantidad);
     printf("P: %.2f\n", p);
-    printf("BufferResult:   ");
-    printChar(bufferResult);
+    //printf("BufferResult:   ");
+    //printChar(bufferResult);
     sprintf(result, "%s%d.rgb", resultado, i);
     escribir_rgb(result, bufferResult, filas, columnas);
     printf("gm convert -depth 8 -size %dx%d ", filas, columnas);
@@ -67,7 +68,7 @@ int leer_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
   printf("Leer_rgb: Archivo: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, strlen((char *)buffer), filas, columnas);
   FILE *file;
   file = fopen(archivo, "r");
-  fread(buffer, filas * columnas * 3, 1, file);
+  fread(buffer, obtener_cantidad(filas, columnas), 1, file);
   printf("Leer_rgb fin: Archivo: %s, BufferLength: %d, Filas: %d, Columnas: %d\n", archivo, strlen((char *)buffer), filas, columnas);
   return fclose(file);
 }
@@ -77,9 +78,15 @@ int escribir_rgb(char *archivo, unsigned char *buffer, int filas, int columnas)
   printf("Escribir_rgb: Archivo: %s, BufferLength: %d\n", archivo, strlen((char *)buffer));
   FILE *file;
   file = fopen(archivo, "w+");
-  fwrite(buffer, filas * columnas * 3, 1, file);
+  fwrite(buffer, obtener_cantidad(filas, columnas), 1, file);
   printf("Escribir_rgb fin: Archivo: %s, BufferLength: %d\n", archivo, strlen((char *)buffer));
   return fclose(file);
+}
+
+int obtener_cantidad(int filas, int columnas) {
+  int cantidad = filas * columnas * 3;
+  cantidad = cantidad + cantidad % 4;
+  return cantidad;
 }
 
 void printChar(unsigned char *buffer)
