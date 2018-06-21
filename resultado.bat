@@ -1,0 +1,10 @@
+gm convert -depth 8 -size 2x2  resultado1.rgb resultado1.bmp
+gm convert -depth 8 -size 2x2  resultado2.rgb resultado2.bmp
+gm convert -depth 8 -size 2x2  resultado3.rgb resultado3.bmp
+gm convert -depth 8 -size 2x2  resultado4.rgb resultado4.bmp
+gm convert -depth 8 -size 2x2  resultado5.rgb resultado5.bmp
+gm convert -depth 8 -size 2x2  resultado6.rgb resultado6.bmp
+gm convert -depth 8 -size 2x2  resultado7.rgb resultado7.bmp
+gm convert -depth 8 -size 2x2  resultado8.rgb resultado8.bmp
+gm convert -depth 8 -size 2x2  resultado9.rgb resultado9.bmp
+gm convert -depth 8 -size 2x2  resultado10.rgb resultado10.bmp

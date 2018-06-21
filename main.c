@@ -35,17 +35,29 @@ int main(int argc, char **argv)
   leer_rgb(img1, buffer1, filas, columnas);
   leer_rgb(img2, buffer2, filas, columnas);
 
-  interpolar(buffer1, buffer2, bufferResult, 0.5, cantidad);
-
   printf("Antes de escribir\n");
   printf("Buffer1:        ");
   printChar(buffer1);
   printf("Buffer2:        ");
   printChar(buffer2);
-  printf("BufferResult:   ");
-  printChar(bufferResult);
 
-  escribir_rgb(resultado, bufferResult, filas, columnas);
+  float variant = 1.0 / (n + 1);
+  float p;
+  int tope = n + 1;
+  char *result = malloc(strlen((char *)resultado) + 5);
+  
+  for(int i = 1; i < tope; i++) {
+    p = variant * i;
+    interpolar(buffer1, buffer2, bufferResult, p, cantidad);
+    printf("P: %.2f\n", p);
+    printf("BufferResult:   ");
+    printChar(bufferResult);
+    sprintf(result, "%s%d.rgb", resultado, i);
+    escribir_rgb(result, bufferResult, filas, columnas);
+    printf("gm convert -depth 8 -size %dx%d ", filas, columnas);
+    printf(" %s%d.rgb", resultado, i);
+    printf(" %s%d.bmp \n", resultado, i);
+  }
 
   return 0;
 }
